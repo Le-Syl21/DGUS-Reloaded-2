@@ -26,7 +26,7 @@ DGUS Reloaded 2.0 redraws every page of [DGUS Reloaded](https://github.com/Desuu
 ### Requirements
 
 - A 480 × 272 DWIN T5UID1 touchscreen. Tested on a Wanhao Duplicator 9 (DMT48270T043_07W). The screens DGUS Reloaded was made for (Creality CR-10S Pro, CR-10S Pro V2, Ender 5 Plus) have the same controller and resolution, but have not been tested with 2.0.
-- Marlin `bugfix-2.1.x` built with `DGUS_LCD_UI RELOADED` **and** [`marlin/dgus-reloaded-2.patch`](marlin/dgus-reloaded-2.patch), until it is merged upstream. The patch saves the language, drives the filament sensor page and keeps the status line. Without it the pages work, but the language goes back to English at each start and the filament sensor page does not work.
+- Marlin `bugfix-2.1.x` built with `DGUS_LCD_UI RELOADED` **and** [`marlin/dgus-reloaded-2.patch`](marlin/dgus-reloaded-2.patch), until it is merged upstream ([MarlinFirmware/Marlin#28590](https://github.com/MarlinFirmware/Marlin/pull/28590)). The patch saves the language, drives the filament sensor page and keeps the status line. Without it the pages work, but the language goes back to English at each start and the filament sensor page does not work.
 - Jam detection on/off relies on `M412 L0` from [MarlinFirmware/Marlin#28585](https://github.com/MarlinFirmware/Marlin/pull/28585).
 
 Wanhao D9 owners: ready-made firmwares with both changes are in [WANHAO-Duplicator-9](https://github.com/Le-Syl21/WANHAO-Duplicator-9) (v2.0.9 and later).
@@ -82,7 +82,7 @@ DGUS Reloaded 2.0 redessine toutes les pages de [DGUS Reloaded](https://github.c
 ### Prérequis
 
 - Un écran tactile DWIN T5UID1 480 × 272. Testé sur une Wanhao Duplicator 9 (DMT48270T043_07W). Les écrans pour lesquels DGUS Reloaded a été fait (Creality CR-10S Pro, CR-10S Pro V2, Ender 5 Plus) ont le même contrôleur et la même résolution, mais n'ont pas été testés avec la 2.0.
-- Marlin `bugfix-2.1.x` compilé avec `DGUS_LCD_UI RELOADED` **et** [`marlin/dgus-reloaded-2.patch`](marlin/dgus-reloaded-2.patch), en attendant son intégration dans Marlin. Le patch enregistre la langue, pilote la page capteur de filament et garde la ligne d'état. Sans lui les pages fonctionnent, mais la langue revient à l'anglais à chaque démarrage et la page capteur de filament ne fonctionne pas.
+- Marlin `bugfix-2.1.x` compilé avec `DGUS_LCD_UI RELOADED` **et** [`marlin/dgus-reloaded-2.patch`](marlin/dgus-reloaded-2.patch), en attendant son intégration dans Marlin ([MarlinFirmware/Marlin#28590](https://github.com/MarlinFirmware/Marlin/pull/28590)). Le patch enregistre la langue, pilote la page capteur de filament et garde la ligne d'état. Sans lui les pages fonctionnent, mais la langue revient à l'anglais à chaque démarrage et la page capteur de filament ne fonctionne pas.
 - L'activation / désactivation du bourrage utilise `M412 L0` de [MarlinFirmware/Marlin#28585](https://github.com/MarlinFirmware/Marlin/pull/28585).
 
 Propriétaires de Wanhao D9 : des firmwares prêts à flasher avec les deux changements sont dans [WANHAO-Duplicator-9](https://github.com/Le-Syl21/WANHAO-Duplicator-9) (v2.0.9 et suivantes).
