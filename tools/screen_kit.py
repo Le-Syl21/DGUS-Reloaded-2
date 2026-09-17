@@ -12,7 +12,7 @@ HERE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 REF = os.path.join(HERE, 'base', 'DWIN_SET')   # DGUS Reloaded 1.0.3: touch and display records, ASCII font, sounds
 FONTS = os.path.join(HERE, 'fonts')
 OUT = sys.argv[1] if len(sys.argv) > 1 else os.path.join(HERE, 'build')
-VERSION = '2.0.0'
+VERSION = '2.0.1'
 
 W, H = 480, 272
 BG, BAR, CARD, CARD2, LINE, FIELD, FIELD_LINE = '#141417', '#1e1e24', '#202026', '#1a1a1f', '#2c2c34', '#2a2a31', '#3a3a43'

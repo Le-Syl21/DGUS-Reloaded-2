@@ -21,8 +21,8 @@ from screen_kit import (HERE, REF, W, H, BG, BAR, CARD, CARD2, LINE, FIELD, FIEL
                         OK, WARN, WHITE, LANG_VP, TEXT_LIB, STYLES, NLANG, font, rgb, c565, glyph, text, TL, Page)
 
 OUT = sys.argv[1] if len(sys.argv) > 1 else os.path.join(HERE, 'build')
-VERSION = '2.0.0'
-BACK = (0, 0, 39, 39)
+VERSION = '2.0.1'
+BACK = (0, 0, 218, 39)   # the whole back element: arrow and page title, up to the status text
 # Copied unchanged from DGUS Reloaded 1.0.3: ASCII font, sounds, screen config and T5 OS files.
 BASE_FILES = ['0_DWIN_ASC.HZK', '01_boot.wav', '02_click.wav', '03_notification.wav', 'T5UID1.CFG', 'T5UID1_V30.BIN',
               'T5OS_V21_NOACK.BIN']
