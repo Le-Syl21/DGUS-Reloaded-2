@@ -20,6 +20,9 @@ DGUS Reloaded 2.0 redraws every page of [DGUS Reloaded](https://github.com/Desuu
 - **A status line that stays**: one line, larger, and the last message (*Ready* for example) remains shown instead of disappearing after 30 seconds. The printer name has its own place at the top of the home screen.
 - **Temperature gauges** on the home screen, from 0 to the maximum temperature, with the target marked.
 - **Units drawn by the screen** (mm, %), so they follow the number instead of sitting at a fixed place.
+- **The job on the printing page**: the file name, with an icon telling an SD card job from one sent by a host.
+- **File names in full**: up to the 32 characters Marlin sends, instead of the 21 that fitted before.
+- **Bed levelling state**: the *ABL* button shows a green tick when levelling is on and a grey cross when it is off, instead of vanishing once switched off.
 
 ![The home screen in the 16 languages](screenshots/languages.png)
 
@@ -78,6 +81,9 @@ DGUS Reloaded 2.0 redessine toutes les pages de [DGUS Reloaded](https://github.c
 - **Une ligne d'état qui reste** : une seule ligne, plus grande, et le dernier message (*Ready* par exemple) reste affiché au lieu de disparaître au bout de 30 secondes. Le nom de l'imprimante a sa place en haut de l'accueil.
 - **Jauges de température** sur l'accueil, de 0 à la température maximale, avec la consigne marquée.
 - **Unités dessinées par l'écran** (mm, %) : elles suivent le nombre au lieu de rester à une place fixe.
+- **L'impression en cours affichée** : le nom du fichier, avec une icône qui distingue une impression depuis la carte SD d'une impression envoyée par un ordinateur.
+- **Noms de fichiers entiers** : jusqu'aux 32 caractères envoyés par Marlin, au lieu des 21 qui tenaient avant.
+- **État du nivellement** : le bouton *ABL* affiche une coche verte quand le nivellement est actif et une croix grise quand il ne l'est pas, au lieu de disparaître une fois désactivé.
 
 ### Prérequis
 

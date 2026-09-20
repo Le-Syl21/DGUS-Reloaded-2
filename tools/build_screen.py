@@ -21,7 +21,7 @@ from screen_kit import (HERE, REF, W, H, BG, BAR, CARD, CARD2, LINE, FIELD, FIEL
                         OK, WARN, WHITE, LANG_VP, TEXT_LIB, STYLES, NLANG, font, rgb, c565, glyph, text, TL, Page)
 
 OUT = sys.argv[1] if len(sys.argv) > 1 else os.path.join(HERE, 'build')
-VERSION = '2.0.1'
+VERSION = '2.0.3'
 BACK = (0, 0, 218, 39)   # the whole back element: arrow and page title, up to the status text
 # Copied unchanged from DGUS Reloaded 1.0.3: ASCII font, sounds, screen config and T5 OS files.
 BASE_FILES = ['0_DWIN_ASC.HZK', '01_boot.wav', '02_click.wav', '03_notification.wav', 'T5UID1.CFG', 'T5UID1_V30.BIN',
@@ -333,13 +333,13 @@ def build_pages(OV, OT):
         if i:
             p.d.line((22, y, 394, y), fill=rgb(LINE))
         p.var(1 + i, x=22, y=y + 6)
-        p.var(6 + i, box=(56, y + 9, 396, y + 25), color=c565(TEXT), font_x=16, font_y=16)
+        p.var(6 + i, box=(48, y + 9, 396, y + 25), color=c565(TEXT), font_x=12, font_y=16)
     btns = [(412, 48, 468, 100), (412, 106, 468, 158), (412, 164, 468, 216)]
     for j, r in enumerate(btns):
         p.rect(r, CARD, LINE, 9)
         p.var(12 + j, x=r[0] + 12, y=(r[1] + r[3]) // 2 - 16)
     p.rect((12, 226, 330, 262), CARD2, LINE, 9)
-    p.var(11, box=(24, 237, 322, 253), color=c565(TEXT), font_x=16, font_y=16)
+    p.var(11, box=(24, 237, 322, 253), color=c565(TEXT), font_x=12, font_y=16)
     pb = (340, 226, 468, 262)
     p.button(pb, 'print', 'print', accent=True)
     p.touch = [p.t(0, BACK)] + [p.t(1 + i, files[i]) for i in range(5)] + [p.t(6 + j, btns[j]) for j in range(3)] + [p.t(9, pb)]
@@ -360,7 +360,9 @@ def build_pages(OV, OT):
         p.glyph('timer', 15, MUTED, 255, 127)
         p.label('elapsed', 274, 125, 'label', CARD, maxw=186)
         p.var(6, box=(256, 147, 462, 165), color=c565(TEXT), font_x=18, font_y=18)
-        p.label('progress', 14, 182, 'label', BG, maxw=300)
+        # What is printed: SD card and file name, or USB for a job sent by a host (STATUS_Icons bit 2, STATUS_JobName)
+        p.vars.append(db.var_bit_icon(0x31BE, 0x0004, 13, 181, 24, 16, 15))
+        p.vars.append(db.var_text(0x31C0, (34, 183, 400, 199), c565(MUTED), 32, 12, 16))
         p.value_at(7, 468 - 5 * 9, 180, 9, TEXT, 1, unit=b' %')
         p.var(8, x=12, y=202)
         p.var(9, x=239, y=202)
@@ -556,7 +558,8 @@ def build_pages(OV, OT):
     probe_b, dis_b = (12, 48, 130, 98), (12, 106, 130, 156)
     p.button(probe_b, 'probe', 'probe', accent=True)
     p.rect(dis_b, BG, LINE, 9)
-    p.var(5, x=dis_b[0], y=dis_b[1])
+    # DGUS_Data::Status: 0 levelling off, 1 levelling on.
+    p.var(5, x=dis_b[0], y=dis_b[1], v_min=0, v_max=1, icon_min=23, icon_max=24)
     p.rect((138, 48, 468, 156), CARD, LINE, 10)
     for k in range(25):
         col, row = k % 5, k // 5
@@ -937,6 +940,10 @@ def icon_libs():
     im, d = canvas(12, 8, CARD2)             # target temperature marker, above the gauge (pixel 0,0 stays the key colour)
     d.polygon([(1, 1), (10, 1), (5, 7)], fill=rgb(ICON))
     lib24[14] = im
+    for i, g in ((15, 'sdcard'), (16, 'usb')):   # job source on the print pages
+        im, d = canvas(18, 18, BG)
+        glyph(im, g, 18, MUTED, 0, 0, 1.8)
+        lib24[i] = im
 
     lib27 = {}
 
@@ -1000,6 +1007,12 @@ def icon_libs():
 
     lib27[21], lib27[22] = dot(False), dot(True)
     lib27[18] = btn(108, 38, ACC, 'play', fg=WHITE, gsize=22)
+    # Bed levelling, off and on. Marlin only ever showed the button while
+    # levelling was on, so switching it off left an empty box and nobody could
+    # tell what the state was. Two pictures, one per state, and no word to
+    # translate: the tick or the cross carries the meaning.
+    lib27[23] = btn(118, 50, CARD, 'x', 'ABL', fg=MUTED, outline=LINE)
+    lib27[24] = btn(118, 50, CARD, 'check', 'ABL', fg=OK, outline=LINE)
 
     def bar(p, side):
         im, d = canvas(228, 14, BG)
@@ -1028,8 +1041,8 @@ def icon_libs():
 SAMPLE_DATA = {0x30FF: 205.3, 0x3100: 210, 0x30FC: 60.0, 0x30FD: 60, 0x30E6: 12.34, 0x30F7: 42, 0x3101: 290, 0x30FE: 120,
                0x4000: 100, 0x30F8: 100, 0x30F9: 100, 0x3106: -1.11, 0x3125: 50, 0x3126: 150.0, 0x3127: 150.0, 0x3128: 10.0,
                0x312C: 210, 0x4021: 8, 0x312D: 33.41, 0x312F: 1.47, 0x3131: 189.27, 0x3173: 128, 0x3174: 117, 0x4022: 80, 0x4023: 90, 0x4025: 10}
-SAMPLE_TEXT = {0x3000: 'E1 Heating...', 0x3025: 'BENCHY.GCO', 0x3045: 'VASE.GCO', 0x3065: 'CLIPS', 0x3085: 'CALIB.GCO', 0x30A5: '',
-               0x30C6: 'BENCHY.GCO', 0x30E8: '1h 23m 45s', 0x4001: 'G28', 0x3133: 'Wanhao D9 MK2 300', 0x314B: '300x300x400',
+SAMPLE_TEXT = {0x3000: 'E1 Heating...', 0x31C0: 'Benchy_Orca', 0x3025: 'DUSTOVICH_BENCHY_PETG_0.2MM.GCO', 0x3045: 'VASE.GCO', 0x3065: 'CLIPS', 0x3085: 'CALIB.GCO', 0x30A5: '',
+               0x30C6: 'DUSTOVICH_BENCHY_PETG_0.2MM.GCO', 0x30E8: '1h 23m 45s', 0x4001: 'G28', 0x3133: 'Wanhao D9 MK2 300', 0x314B: '300x300x400',
                0x3163: '2.1.x (v2.0.9)', 0x3175: '12d 4h 10m', 0x318D: '14h 2m', 0x31A5: '1.23 km', 0x1100: 'Printer halted.',
                0x1120: 'Please reset', 0x1140: '', 0x1160: ''}
 

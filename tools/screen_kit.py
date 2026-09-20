@@ -104,6 +104,8 @@ GLYPHS = {
     'minus': '<path d="M6 12h12"/>',
     'plus': '<path d="M12 6v12M6 12h12"/>',
     'save': '<path d="M5 4h11l3 3v13H5z"/><path d="M8 4v5h7V4M8 20v-6h8v6"/>',
+    'sdcard': '<path d="M7 3h8l4 4v14H7z"/><path d="M10 6v3M13 6v3M16 8v1"/>',
+    'usb': '<path d="M12 21V5M9 7l3-3 3 3"/><path d="M12 15l-4-3V9M12 13l4-3V8"/><circle cx="8" cy="8" r="1.2"/><rect x="15" y="6" width="2" height="2"/><circle cx="12" cy="19" r="1.6"/>',
     'sensor': '<circle cx="9" cy="12" r="6"/><circle cx="9" cy="12" r="1.8"/><path d="M17.5 8.5a5.5 5.5 0 0 1 0 7M20.5 6a9.5 9.5 0 0 1 0 12"/>',
 }
 
