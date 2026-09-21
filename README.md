@@ -22,7 +22,7 @@ DGUS Reloaded 2.0 redraws every page of [DGUS Reloaded](https://github.com/Desuu
 - **Units drawn by the screen** (mm, %), so they follow the number instead of sitting at a fixed place.
 - **The job on the printing page**: the file name, with an icon telling an SD card job from one sent by a host.
 - **File names in full**: up to the 32 characters Marlin sends, instead of the 21 that fitted before.
-- **Bed levelling state**: the *ABL* button shows a green tick when levelling is on and a grey cross when it is off, instead of vanishing once switched off.
+- **Bed levelling switch**: a switch shows whether levelling is on, and turns it on or off. It only appears once a mesh has been probed, since there is nothing to switch on before that. Needs the Marlin patch; the stock firmware only ever lets the button switch levelling off.
 
 ![The home screen in the 16 languages](screenshots/languages.png)
 
@@ -83,7 +83,7 @@ DGUS Reloaded 2.0 redessine toutes les pages de [DGUS Reloaded](https://github.c
 - **Unités dessinées par l'écran** (mm, %) : elles suivent le nombre au lieu de rester à une place fixe.
 - **L'impression en cours affichée** : le nom du fichier, avec une icône qui distingue une impression depuis la carte SD d'une impression envoyée par un ordinateur.
 - **Noms de fichiers entiers** : jusqu'aux 32 caractères envoyés par Marlin, au lieu des 21 qui tenaient avant.
-- **État du nivellement** : le bouton *ABL* affiche une coche verte quand le nivellement est actif et une croix grise quand il ne l'est pas, au lieu de disparaître une fois désactivé.
+- **Interrupteur de nivellement** : un interrupteur montre si le nivellement est actif, et permet de l'activer ou de le désactiver. Il n'apparaît qu'une fois un palpage effectué, puisqu'il n'y a rien à activer avant. Demande le patch Marlin ; le firmware d'origine ne sait que désactiver le nivellement.
 
 ### Prérequis
 

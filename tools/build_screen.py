@@ -21,7 +21,7 @@ from screen_kit import (HERE, REF, W, H, BG, BAR, CARD, CARD2, LINE, FIELD, FIEL
                         OK, WARN, WHITE, LANG_VP, TEXT_LIB, STYLES, NLANG, font, rgb, c565, glyph, text, TL, Page)
 
 OUT = sys.argv[1] if len(sys.argv) > 1 else os.path.join(HERE, 'build')
-VERSION = '2.0.3'
+VERSION = '2.0.4'
 BACK = (0, 0, 218, 39)   # the whole back element: arrow and page title, up to the status text
 # Copied unchanged from DGUS Reloaded 1.0.3: ASCII font, sounds, screen config and T5 OS files.
 BASE_FILES = ['0_DWIN_ASC.HZK', '01_boot.wav', '02_click.wav', '03_notification.wav', 'T5UID1.CFG', 'T5UID1_V30.BIN',
@@ -557,9 +557,10 @@ def build_pages(OV, OT):
     p = N(13, 'leveling_automatic', 'automatic')
     probe_b, dis_b = (12, 48, 130, 98), (12, 106, 130, 156)
     p.button(probe_b, 'probe', 'probe', accent=True)
-    p.rect(dis_b, BG, LINE, 9)
-    # DGUS_Data::Status: 0 levelling off, 1 levelling on.
-    p.var(5, x=dis_b[0], y=dis_b[1], v_min=0, v_max=1, icon_min=23, icon_max=24)
+    # No frame drawn here: each state carries its own picture, so the button
+    # can vanish entirely while no mesh has been probed.
+    # DGUS_Data::Status: 0 levelling off, 1 levelling on, 2 no mesh.
+    p.var(5, x=dis_b[0], y=dis_b[1], v_min=0, v_max=2, icon_min=23, icon_max=25)
     p.rect((138, 48, 468, 156), CARD, LINE, 10)
     for k in range(25):
         col, row = k % 5, k // 5
@@ -1007,12 +1008,20 @@ def icon_libs():
 
     lib27[21], lib27[22] = dot(False), dot(True)
     lib27[18] = btn(108, 38, ACC, 'play', fg=WHITE, gsize=22)
-    # Bed levelling, off and on. Marlin only ever showed the button while
-    # levelling was on, so switching it off left an empty box and nobody could
-    # tell what the state was. Two pictures, one per state, and no word to
-    # translate: the tick or the cross carries the meaning.
-    lib27[23] = btn(118, 50, CARD, 'x', 'ABL', fg=MUTED, outline=LINE)
-    lib27[24] = btn(118, 50, CARD, 'check', 'ABL', fg=OK, outline=LINE)
+    # Bed levelling: a switch, like the filament sensor page, with nothing to
+    # translate. Three states, because a switch that cannot be moved is worse
+    # than no switch: 0 off, 1 on, 2 no mesh probed yet, and then the whole
+    # button disappears. Marlin used to draw a one-way button that went blank
+    # once pressed, leaving no way to tell what the state was.
+    def abl(state):
+        im, d = canvas(118, 50, BG)
+        if state == 2:
+            return im                      # no mesh: nothing to show
+        d.rounded_rectangle((0, 0, 117, 49), radius=9, fill=rgb(CARD), outline=rgb(LINE))
+        im.paste(switch(state == 1), (28, 9))
+        return im
+
+    lib27[23], lib27[24], lib27[25] = abl(0), abl(1), abl(2)
 
     def bar(p, side):
         im, d = canvas(228, 14, BG)
@@ -1038,7 +1047,8 @@ def icon_libs():
 
 
 # ------------------------------------------------------------------------------------------ preview
-SAMPLE_DATA = {0x30FF: 205.3, 0x3100: 210, 0x30FC: 60.0, 0x30FD: 60, 0x30E6: 12.34, 0x30F7: 42, 0x3101: 290, 0x30FE: 120,
+SAMPLE_DATA = {0x3108: 1,  # levelling on, so the preview shows the switch
+               0x30FF: 205.3, 0x3100: 210, 0x30FC: 60.0, 0x30FD: 60, 0x30E6: 12.34, 0x30F7: 42, 0x3101: 290, 0x30FE: 120,
                0x4000: 100, 0x30F8: 100, 0x30F9: 100, 0x3106: -1.11, 0x3125: 50, 0x3126: 150.0, 0x3127: 150.0, 0x3128: 10.0,
                0x312C: 210, 0x4021: 8, 0x312D: 33.41, 0x312F: 1.47, 0x3131: 189.27, 0x3173: 128, 0x3174: 117, 0x4022: 80, 0x4023: 90, 0x4025: 10}
 SAMPLE_TEXT = {0x3000: 'E1 Heating...', 0x31C0: 'Benchy_Orca', 0x3025: 'DUSTOVICH_BENCHY_PETG_0.2MM.GCO', 0x3045: 'VASE.GCO', 0x3065: 'CLIPS', 0x3085: 'CALIB.GCO', 0x30A5: '',
@@ -1079,6 +1089,8 @@ def preview(pages, pics, libs, lang=0):
                     idx = f['icon_min'] + lang
                 elif f['lib'] in (30, 37):
                     idx = SAMPLE_DATA.get(f['vp'], 0)
+                elif f['vp'] in SAMPLE_DATA:
+                    idx = f['icon_min'] + int(SAMPLE_DATA[f['vp']])
                 else:
                     idx = f['icon_max']
                 if idx in lib:
