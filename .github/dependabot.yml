@@ -8,6 +8,11 @@ updates:
     directory: /
     schedule:
       interval: monthly
+    # requirements.txt states the MINIMUM each library must be, not the newest
+    # one released. Raise that floor only when something actually needs it,
+    # rather than every month, which would exclude whatever a distribution
+    # ships for no reason.
+    versioning-strategy: increase-if-necessary
     groups:
       python:
         patterns: ["*"]
