@@ -1,2 +1,2 @@
 Pillow>=10  # with libraqm for Arabic and Devanagari shaping
-CairoSVG>=2.7
+CairoSVG>=2.9.1
