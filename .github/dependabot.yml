@@ -1,6 +1,7 @@
 version: 2
 
-# Python dependencies and, should a workflow ever appear here, its actions.
+# Python dependencies only: there is no workflow here for a github-actions
+# entry to watch, and Dependabot fails that job outright when it finds none.
 # A major is left to its own pull request: a breaking bump must not hold back
 # the routine ones.
 updates:
@@ -19,13 +20,3 @@ updates:
         update-types: ["minor", "patch"]
     commit-message:
       prefix: chore
-
-  - package-ecosystem: github-actions
-    directory: /
-    schedule:
-      interval: monthly
-    groups:
-      actions:
-        patterns: ["*"]
-    commit-message:
-      prefix: ci
